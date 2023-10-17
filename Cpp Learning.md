@@ -238,6 +238,76 @@ int *pointer_name{array_name};
 type *function();
 ```
 
+# OOP
+## Classes and Objects
+
+### Declaring a Class
+```C++
+class Class_Name
+{
+    // declaration(s);
+};
+```
+
+e.g.
+```C++
+// Player
+class Player
+{
+    //attributes
+    std::string name;
+    int health;
+    int xp;
+
+    //methods
+    void talk(std::string text_to_say);
+    bool is_dead();
+};
+
+//Creating object
+Player frank;
+Player hero;
+
+Player *enemy = new Player();
+delete enemy;
+```
+
+### Accessing Class Members
+
+If we hace an object(dot operator)
+* Using the dot operator
+```C++
+Account frank_account;
+
+frank_account.balance;
+frank_account.deposit(1000.00);
+```
+If we hace a pointer to an object(member of pointer operator)
+* Dereference the pointer then use the dot operator.
+```C++
+Account *frank_account = new Account();
+
+(*frank_account).balance;
+(*frank_account).deposit(1000.00);
+```
+* Or use the member of pointer operator(arrow operator)
+```C++
+Account *frank_account = new Account();
+
+frank_account->balance;
+frank_account->deposit(1000.00);
+```
+
+
+
+
+
+
+
+
+
+
+
 ## 游戏编程模式
 ### 架构，性能和游戏tips
 

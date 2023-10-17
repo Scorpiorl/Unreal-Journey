@@ -298,7 +298,46 @@ frank_account->balance;
 frank_account->deposit(1000.00);
 ```
 
+### Constructors and Destructors
+```C++
+class Player
+{
+private:
+    std::string name;
+    int health;
+    int xp;
+public:
+    //Constructors
+    Player();
+    Player(std::string name_val);
+    Player(std::string name_val, int health_val, int xp_val);
+    //Destructor
+    ~Player();
+}
+```
+#### Overloaded Constructors
+```C++
+Player::Player()
+{
+    name = "None";
+    health = 0;
+    xp = 0
+}
 
+Player::Player(std::string name_val)
+{
+    name = name_val;
+    health = 0;
+    xp = 0;
+}
+
+Player::Player(std::string name_val, int health_val, int xp_val)
+{
+    name = name_val;
+    health = health_val;
+    xp = xp_val;
+}
+```
 
 
 

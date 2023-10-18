@@ -109,7 +109,7 @@ object.clear()
 ```C++
 srand(time(nullptr));
 ```
-
+---
 # Function
 
 1.function prototype
@@ -125,6 +125,7 @@ Default values must appear at tail end of the parameter list.
 ### static
 **static** 修饰符，将函数中此变量的值保存至下一次调用。
 
+---
 # Pointer
 Declaring Pointers
 ``` C++
@@ -237,11 +238,11 @@ int *pointer_name{array_name};
 ```C++
 type *function();
 ```
-
+---
 # OOP
 ## Classes and Objects
 
-### Declaring a Class
+### 1. Declaring a Class
 ```C++
 class Class_Name
 {
@@ -272,7 +273,7 @@ Player *enemy = new Player();
 delete enemy;
 ```
 
-### Accessing Class Members
+### 2. Accessing Class Members
 
 If we hace an object(dot operator)
 * Using the dot operator
@@ -298,7 +299,7 @@ frank_account->balance;
 frank_account->deposit(1000.00);
 ```
 
-### Constructors and Destructors
+### 3. Constructors and Destructors
 ```C++
 class Player
 {
@@ -338,7 +339,114 @@ Player::Player(std::string name_val, int health_val, int xp_val)
     xp = xp_val;
 }
 ```
+#### Constructor Initialization Lists
+```C++
+Player()
 
+Player::Player()
+    : name{"None"}, health{0}, xp{0} {
+
+    }
+
+Player::Player(std::string name_val)
+    : name{name_val}, health{0}, xp{0} {
+
+    }
+
+Player::Player(std::string name_val, int health_val, int xp_val)
+    : name{name_val}, health{health_val}, xp{xp_val} {
+
+    }
+```
+#### delegating Constructors
+```C++
+//委托构造函数：可以在构造函数初始化列表中调用同一类的另一个构造函数
+Player::Player(std::string name_val, int health_val, int xp_val)
+    : name{name_val}, health{health_val}, xp{xp_val} {
+
+    }
+
+Player::Player()
+    : Player {"None", 0, 0} {
+
+    }
+
+Player::Player(std::string name_val)
+    : Player {name_val, 0, 0} {
+
+    }
+```
+
+#### Default Constructor Paramenters
+```C++
+class Player
+{
+private:
+    std::string name;
+    int health;
+    int xp;
+public:
+    //Constructor with defalt parameter values
+    Player(std::string name_val = "None", int health = 0, int xp = 0);
+}
+
+Player::Player(std::string name_val, int health_val, int xp_val)
+    : name{name_val}, health{health_val}, xp{xp_val} {
+
+    }
+```
+
+#### Copy Constructor 拷贝构造
+```C++
+// Pass object by-value
+// 将一个对象作为参数通过值传递给函数或方法
+Player hero {"Hero", 100, 20};
+
+void display_player(Player p){
+    // p is a COPY of hero in this example
+    // use p
+    // Destructor for p will be called 
+}
+
+display_player(hero);
+
+```
+
+```C++
+// Return object by-value
+// 从函数或方法中按值返回对象
+Player enemy;
+
+Player create_super_enemy(){
+    Player an_enemy{"Super Enemy", 1000, 1000};
+    return an_enemy; // A COPY of an_enemy is returned
+}
+
+enemy = create_super_enemy();
+``` 
+
+```C++
+// Construct one object based on another
+// 基于同一类的现有对象构造一个新对象
+Player hero {"Hero", 100, 100};
+
+Player another_hero {hero}; //A COPY of hero is made
+```
+
+```C++
+//Implementing the Copy Constructor
+Type::Type(const Type &source)
+    : name{source.name}, health{source.health}, xp{source.xp} {
+        
+    }
+
+//Implementing the Copy Constructor by Delegating Constructor
+Type::Type(const Type &source)
+    : Type{source.name, source.health, source.xp} {
+
+    }
+
+```
 
 
 

@@ -397,6 +397,7 @@ Player::Player(std::string name_val, int health_val, int xp_val)
 ```
 
 #### Copy Constructor 拷贝构造
+1. 
 ```C++
 // Pass object by-value
 // 将一个对象作为参数通过值传递给函数或方法
@@ -411,7 +412,7 @@ void display_player(Player p){
 display_player(hero);
 
 ```
-
+2. 
 ```C++
 // Return object by-value
 // 从函数或方法中按值返回对象
@@ -424,7 +425,7 @@ Player create_super_enemy(){
 
 enemy = create_super_enemy();
 ``` 
-
+3. 
 ```C++
 // Construct one object based on another
 // 基于同一类的现有对象构造一个新对象
@@ -433,11 +434,12 @@ Player hero {"Hero", 100, 100};
 Player another_hero {hero}; //A COPY of hero is made
 ```
 
+
 ```C++
 //Implementing the Copy Constructor
 Type::Type(const Type &source)
     : name{source.name}, health{source.health}, xp{source.xp} {
-        
+
     }
 
 //Implementing the Copy Constructor by Delegating Constructor

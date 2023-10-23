@@ -449,7 +449,47 @@ Type::Type(const Type &source)
     }
 
 ```
+* Shallow Copy Constructor
+    ```C++
+    // 浅拷贝是编译器生成拷贝构造的默认行为，它基本上对所有对象属性进行成员级复制，因此新创建对象和被复制对象最终会指向堆中同一个存储区域
+    // 当一个对象调用析构函数时，另一个对象依旧会指向被释放的空间从而造成错误
+    // 任何将原始指针作为数据成员的类都会出现该问题
+    class Shallow {
+    private:
+        int *data;
+    public:
+        Shallow(int d);
+        Shallow(const Shallow &source);
 
+        ~Shallow();
+    }
+
+    Shallow::Shallow(int d) {
+        data = new int;
+        *data = d;
+    }
+    Shallow::Shallow(const Shallow &source)
+        :data(source.data) {
+            cout << "Copy constructor - shallow copy" << endl;
+    }
+    Shallow::~Shallow() {
+        delete data;
+        cout << "Destructor freeing data" << endl;
+    }
+    
+    int main() {
+        Shallow obj1 {100};
+        display_shallow(obj1);
+        // obj1's data has been released!
+
+        //error
+        obj1.set_date_value(1000);
+        Shallow obj2 {obj1};
+        cout << "Hello world" << endl;
+        return 0;
+    }
+    ```
+* Deeply Copy Constructor
 
 
 

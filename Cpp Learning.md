@@ -238,6 +238,23 @@ int *pointer_name{array_name};
 ```C++
 type *function();
 ```
+### Reference and Pointer
+| |References|Pointers|
+|----|----|----|
+|Reassignment|The variable cannot be reassigned in Reference.|The variable can be reassigned in Pointers.|
+|Memory Address|It shares the same address as the original variable.|Pointers have their own memory address.|
+|Work|It is referring to another variable.|It is storing the address of the variable.|
+|Null Value|It does not have null value.|It can have value assigned as null.|
+|Arguments	|This variable is referenced by the method pass by value.|The pointer does it work by the method known as pass by reference.|
+
+    When to use What
+    The performances are exactly the same as references are implemented internally as pointers. But still, you can keep some points in your mind to decide when to use what:
+    1. Use references:
+       1. In function parameters and return types.
+    2. Use pointers:
+       1. If pointer arithmetic or passing a NULL pointer is needed. For example, for arrays (Note that accessing an array is implemented using pointer arithmetic).
+       2. To implement data structures like a linked list, a tree, etc. and their algorithms. This is so because, in order to point to different cells, we have to use the concept of pointers. 
+
 ---
 # OOP
 ## Classes and Objects
@@ -275,7 +292,7 @@ delete enemy;
 
 ### 2. Accessing Class Members
 
-If we hace an object(dot operator)
+If we have an object(dot operator)
 * Using the dot operator
 ```C++
 Account frank_account;
@@ -283,7 +300,7 @@ Account frank_account;
 frank_account.balance;
 frank_account.deposit(1000.00);
 ```
-If we hace a pointer to an object(member of pointer operator)
+If we have a pointer to an object(member of pointer operator)
 * Dereference the pointer then use the dot operator.
 ```C++
 Account *frank_account = new Account();
@@ -490,7 +507,138 @@ Type::Type(const Type &source)
     }
     ```
 * Deeply Copy Constructor
+    ```C++
+    class Deep(){
+    private:
+        // Pointer
+        int *data;
 
+    public:
+        // Constructor
+        Deep(int d);
+        // Copy Constructor
+        Deep(const Deep &source);
+        // Destructor
+        ~Deep();
+    }
+
+    Deep::Deep(int d){
+        // allocate storage
+        data = new int;
+        *data = d;
+    }
+    Deep::~Deep(){
+        // free storage
+        delete data;
+        cout << "Desturctor freeing data" << endl;
+    }
+    
+    /*
+    Deep::Deep(const Deep &source){
+        data = new int;
+        *data = *source.data;
+        cout << "Copy constructor - deep copy" << endl;
+    }
+    */
+    Deep::Deep(const Deep &source)
+        : Deep{*source.data} {
+            cout << "Copy constructor - deep copy" << endl;
+    }
+
+    void display_deep (Deep s) {
+        cout << s.get_data_value() << endl;
+    }
+
+    int main() {
+        Deep obj1 {100};
+        display_deep(obj1);
+
+        obj1.set_data_value(1000);
+        Deep obj2 {obj1};
+
+        return 0;
+    }
+    ```
+#### Move Constructor
+    L-value reference operator(&)
+    R-value reference operator(&&)
+作用：
+1. Instead of making a deep copy of the move constructor
+   1. 'moves' the resource
+   2. Simply cpies the address of the resource from source to the current object
+   3. And, nulls out the pointer in the source pointer
+2. Very efficient 
+```C++
+// Syntsx R-value reference
+Type::Type(Type &&source);
+
+```
+```C++
+// Move class with move constructor
+class Move {
+private:
+    int *data;
+public:
+    void set_data_value (int d) { *data = d; }
+    int get_data_value () { return *data; } 
+    // Constructor
+    Move (int d);
+    // Copy Constructor
+    Move ( const Move &source);
+    // Move Constructor
+    Move (Move &&source);
+    // Destructor
+    ~Move();
+
+}
+
+// 'Steal' the data and then null out the source pointer
+Move::Move(Move &&source) 
+    :data{source.data} {
+        source.data = nullptr;
+}
+```
+
+#### this pointer
+#### const with Classes
+#### Static Class Members
+```C++
+// .h 
+class Player {
+private:
+    static int num_players;
+public:
+    static int get_num_players();
+    ...
+}
+
+// .cpp 
+#include "Player.h"
+
+int Player::num_players = 0;
+int Player::get_num_players() {
+    return num_players;
+}
+// 增加计数器的最佳位置是构造函数中
+Player::Player(std::string name_val, int health_val, int xp_val) 
+    : name{name_val}, health{health_val}, xp{xp_val} {
+        ++num_players;
+    }
+Player::~Player() {
+    --num_players;
+}
+```
+#### Structs VS Classes
+Structs 的属性是默认public的。
+ * struct
+   * Use struct for passive objects with public access
+   * Don't declare methods in sturct
+ * class
+   * Use class for active objects with private access
+   * Implement getters/setters as needed
+   * Implement member methods as needed
+
+#### friend class 
 
 
 

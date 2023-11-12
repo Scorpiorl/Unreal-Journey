@@ -639,7 +639,17 @@ Structs 的属性是默认public的。
    * Implement member methods as needed
 
 #### friend class 
-
+```C++
+class Player {
+    // other_class 可以访问 Player 中的任何成员
+    friend class other_class;
+    std::string name;
+    int health;
+    int xp;
+public:
+    ...
+}
+```
 
 
 

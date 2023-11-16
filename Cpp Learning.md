@@ -650,6 +650,59 @@ public:
     ...
 }
 ```
+### Operator Overloading
+
+#### Overloading the copy assignment operator (deep copy)
+```C++
+
+Type &Type::operator=(const Type &rhs);
+
+
+Mystring &Mystring::operator=(const Mystring &rhs);
+s2 = s1;
+// operator= method is called
+s2.operator=(s1); 
+
+
+Mystring &Mystring::operator=(const Mystring &rhs) {
+    if(this == &rhs) {
+        return *this;
+    }
+    delete [] str;
+    str = new char[std::strlen(rhs.str) + 1];
+    std::strcopy(str, rhs.str);
+
+    return *this;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

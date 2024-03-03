@@ -650,9 +650,19 @@ public:
     ...
 }
 ```
+
+
 ### Operator Overloading
 
-#### Overloading the copy assignment operator (deep copy)
+|operator (cannot be overload)|
+|  :----:  | 
+| ::  |
+| :?  | 
+|.*|
+|.|
+|sizeof|
+
+#### 1. Overloading the copy assignment operator (deep copy)
 ```C++
 
 Type &Type::operator=(const Type &rhs);
@@ -665,9 +675,11 @@ s2.operator=(s1);
 
 
 Mystring &Mystring::operator=(const Mystring &rhs) {
+    //赋值语句左侧对象由this指针引用
     if(this == &rhs) {
         return *this;
     }
+    //释放左侧对象以便赋值
     delete [] str;
     str = new char[std::strlen(rhs.str) + 1];
     std::strcopy(str, rhs.str);
@@ -675,6 +687,79 @@ Mystring &Mystring::operator=(const Mystring &rhs) {
     return *this;
 }
 ```
+#### 2. Overloading the copy assignment operator (move)
+```C++
+//左值引用使用&操作符，而右值引用使用&&操作符
+Type &Type::operator=(Type &&rhs);
+
+Mystring &Mystring::operator=(Mystring &&rhs);
+//move operator= called
+s1 = Mystring{"Joe"};
+//move operator= called
+s1 = "Frank";
+
+
+Mystring &Mystring::operator=(Mystring &&rhs) {
+    if (this == &rhs) {
+        return *this;
+    }
+    
+    delete [] str;
+    str = rhs.str;
+    rhs.str = nullptr;
+    
+    return *this;
+}
+```
+#### 3. Overloading operator as member functions
+```C++
+(++， --， -， !)
+ReturnType Type::operatorOp();
+
+Number Number::operator-() const;
+Number Number::operator++();
+Number Number::operator++(int);
+bool Number::operator!() const;
+
+eg.
+Number n1{100}；
+Number n2 = -n1;
+n2 = ++n1;
+n2 = n1++;
+
+
+
+(+， -， ==，!=，<，>，etc.)
+RetrunType Type::operatorOp(const Tpye &rhs);
+
+Number Number::operator+(const Number &rhs) const;
+Number Number::operator-(const Number &rhs) const;
+Number Number::operator==(const Number &rhs) const;
+Number Number::operator<(const Number &rhs) const;
+
+eg.
+Number n1{100}, n2{200};
+Number n3 = n1 + n2; //n1.operator+(n2);
+n3 = n1 - n2;        //n1.oprator-(n2);
+if (n1 == n2) ...    //n1.operator==(n2);
+
+//全局函数的二元操作符重载
+(+， -， ==，!=，<，>，etc.)
+RetrunType Type::operatorOp(const Tpye &lhs, const Tpye &rhs);
+
+Number Number::operator+(const Tpye &lhs, const Tpye &rhs) const;
+Number Number::operator-(const Tpye &lhs, const Tpye &rhs) const;
+Number Number::operator==(const Tpye &lhs, const Tpye &rhs) const;
+Number Number::operator<(const Tpye &lhs, const Tpye &rhs) const;
+
+eg.
+Number n1{100}, n2{200};
+Number n3 = n1 + n2; //n1.operator+(n1, n2);
+n3 = n1 - n2;        //n1.oprator-(n1, n2);
+if (n1 == n2) ...    //n1.operator==(n1, n2);
+```
+
+
 
 
 

@@ -793,6 +793,13 @@ if (n1 == n2) ...    //n1.operator==(n1, n2);
 
 
 
+## Git使用指南
+1. Failed to connect to github.com port 443.
+   ```
+   //在git bash运行
+   git config --global http.proxy ""
+   ```
+
 ## 游戏编程模式
 ### 架构，性能和游戏tips
 

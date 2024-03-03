@@ -727,8 +727,6 @@ Number n2 = -n1;
 n2 = ++n1;
 n2 = n1++;
 
-
-
 (+， -， ==，!=，<，>，etc.)
 RetrunType Type::operatorOp(const Tpye &rhs);
 
@@ -742,7 +740,11 @@ Number n1{100}, n2{200};
 Number n3 = n1 + n2; //n1.operator+(n2);
 n3 = n1 - n2;        //n1.oprator-(n2);
 if (n1 == n2) ...    //n1.operator==(n2);
+```
 
+#### 4. Overloading operator as global functions
+重载运算符只能在成员函数和全局函数中选其一，不然编译器无法识别使用哪一种。
+```C++
 //全局函数的二元操作符重载
 (+， -， ==，!=，<，>，etc.)
 RetrunType Type::operatorOp(const Tpye &lhs, const Tpye &rhs);
@@ -757,9 +759,88 @@ Number n1{100}, n2{200};
 Number n3 = n1 + n2; //n1.operator+(n1, n2);
 n3 = n1 - n2;        //n1.oprator-(n1, n2);
 if (n1 == n2) ...    //n1.operator==(n1, n2);
+
 ```
 
+```C++
+//Mystirng.h
+class Mystring {
+    //********************************************************************
+    friend bool operator==(const Mystring &lhs, const Mystring &rhs); 
+    friend Mystring operator-(const Mystring &obj);
+    friend Mystring operator+(const Mystring &lhs, const Mystring &rhs);
+    friend std::ostream &operator<<(std::ostream &os, const Mystring &rhs);
+    friend std::istream &operator>>(std::istream &os, const Mystring &rhs);
+    //********************************************************************
+private:
+    char *str;
+public:
+    Mystring();
+    Mystring(const char *s);
+    Mystring(const Mystring &source);
+    Mystring(Mystring &&source);
+    ~Mystring();
 
+    Mystring &operator=(const Mystring &rhs);
+    Mystring &operator=(Mystring &&rhs);
+
+    void display() const;
+    int get_length() const;
+    const char *get_str() const;
+}
+```
+
+   1) Mystring operator-
+        ```C++
+        Mystring operator-(const Mystring &obj) {
+            char *buff = new char[std::strlen(obj.str)+ 1];
+            std::strcpy(buff, obj.str);
+            for(size_t i=0; i<std::strlen(buff); i++)
+                buff[i] = std::tolower(buff[i]); 
+            Mystring temp {buff};
+            delete [] buff;
+            return temp;
+        }
+        ```
+   2) Mystring operator== 
+        ```C++
+        bool operator==(const Mystring &lhs, const Mystirng &rhs) {
+            if(std::strcmp(lhs.str, rhs.str) == 0)
+                return true;
+            else 
+                return false;
+        }
+        ```
+   3) Mystring operator+
+        ```C++
+        Mystring operator+(const Mystring &lhs, const Mystring &rhs) {
+            size_t buff_size = std::strlen(lhs.str)+ std::strlen(rhs.str) + 1;
+            char *buff = new char[buff_size];
+            std::strcpy(buff, lhs.str);
+            std::strcat(buff, rhs.str);
+            Mystring temp{buff};
+            delete [] buff;
+            return temp;
+        }
+        ```
+   4) operator<< 
+        ```C++
+        std::ostream &operator<<(std::ostream &os, const Mystring &obj) {
+            os << obj.str; //if friend function
+            // os << obj.get_str(); //if not friend function
+            return os;
+        }
+        ``` 
+   5) operator>>
+        ```C++
+        std::istream &operator>>(std::istream &is, Mystring &obj) {
+            char *buff = new char[1000];
+            is >> buff;
+            obj = Mystring{buff}; //If you have copy or move assignment
+            delete [] buff;
+            return is;
+        }
+        ```
 
 
 

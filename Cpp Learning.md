@@ -673,7 +673,7 @@ s2 = s1;
 // operator= method is called
 s2.operator=(s1); 
 
-
+//.h Mystring &operator=(const Mystring &rhs)
 Mystring &Mystring::operator=(const Mystring &rhs) {
     //赋值语句左侧对象由this指针引用
     if(this == &rhs) {

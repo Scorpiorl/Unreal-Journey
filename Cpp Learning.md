@@ -902,6 +902,12 @@ public:
 };
 ```
 2. Multiple Inheritance
+   ```C++
+   class Department_Chair:
+        public Faculty, public Administrator {
+        ...
+    };
+   ```
    
 
 
@@ -939,6 +945,18 @@ public:
    //在git bash运行
    git config --global http.proxy ""
    ```
+
+## C++注意事项
+1.  在写头文件时需要注意，在开头和结尾处必须按照如下样式加上预编译语句（如下）：
+```C++
+#ifndef _FileName_H
+#define _FileName_H
+
+//你的代码写在这里
+
+#endif
+```
+这样做是为了防止重复编译，不这样做就有可能出错。
 
 ## 游戏编程模式
 ### 架构，性能和游戏tips
